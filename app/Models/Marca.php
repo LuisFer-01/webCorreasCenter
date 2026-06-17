@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Str;
 
-#[Fillable('nombre', 'slug', 'logo', 'descripcion', 'sitio_web', 'estado',)]
+#[Fillable('nombre', 'slug', 'logo', 'descripcion', 'website', 'estado',)]
 class Marca extends Model
 {
     use HasFactory;
