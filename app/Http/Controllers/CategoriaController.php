@@ -33,7 +33,7 @@ class CategoriaController extends Controller
                 ];
             });
 
-        return Inertia::render('Categories/Index', [
+        return Inertia::render('categorias/Index', [
             'categorias' => $categorias,
         ]);
     }
@@ -78,7 +78,7 @@ class CategoriaController extends Controller
                 'slug' => $cat->slug,
             ]);
 
-        return Inertia::render('Categories/Show', [
+        return Inertia::render('categorias/Show', [
             'categoria' => [
                 'id' => $categoria->id,
                 'nombre' => $categoria->nombre,

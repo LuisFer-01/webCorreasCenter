@@ -42,7 +42,7 @@ class SubCategoriaController extends Controller
                 'slug' => $cat->slug,
             ]);
 
-        return Inertia::render('Subcategories/Show', [
+        return Inertia::render('subcategorias/Show', [
             'subcategoria' => [
                 'id' => $subcategoria->id,
                 'nombre' => $subcategoria->nombre,

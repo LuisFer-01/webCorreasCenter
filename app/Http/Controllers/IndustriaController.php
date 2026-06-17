@@ -27,7 +27,7 @@ class IndustriaController extends Controller
                 ];
             });
 
-        return Inertia::render('Applications/Index', [
+        return Inertia::render('aplicaciones/Index', [
             'industrias' => $industrias,
         ]);
     }
@@ -79,7 +79,7 @@ class IndustriaController extends Controller
                 'icono' => $ind->icono_url,
             ]);
 
-        return Inertia::render('Applications/Show', [
+        return Inertia::render('aplicaciones/Show', [
             'industria' => [
                 'id' => $industria->id,
                 'nombre' => $industria->nombre,

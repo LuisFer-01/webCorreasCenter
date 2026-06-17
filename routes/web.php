@@ -1,9 +1,7 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
-use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
-use Inertia\Inertia;
 use App\Http\Controllers\{
     HomeController,
     CategoriaController,
@@ -13,15 +11,16 @@ use App\Http\Controllers\{
     SucursalController,
     BuscadorController
 };
+use Inertia\Inertia;
 
-// Home / Landing Page
+// Home / Landing Page (DEBE IR PRIMERO)
 Route::get('/', [HomeController::class, 'index'])->name('home');
 
 // Categorías
 Route::get('/categorias', [CategoriaController::class, 'index'])->name('categorias.index');
 Route::get('/categoria/{slug}', [CategoriaController::class, 'show'])->name('categorias.show');
 
-// Subcategorías (detalle técnico)
+// Subcategorías
 Route::get('/subcategoria/{slug}', [SubCategoriaController::class, 'show'])->name('subcategorias.show');
 
 // Servicios
@@ -32,32 +31,23 @@ Route::get('/servicio/{slug}', [ServicioController::class, 'show'])->name('servi
 Route::get('/aplicaciones', [IndustriaController::class, 'index'])->name('aplicaciones.index');
 Route::get('/aplicacion/{slug}', [IndustriaController::class, 'show'])->name('aplicaciones.show');
 
-// Contacto / Sucursales
-Route::get('/contacto', [SucursalController::class, 'index'])->name('contacto');
+// Sucursales
+Route::get('/sucursales', [SucursalController::class, 'index'])->name('sucursales');
 
 // Búsqueda
 Route::get('/buscar', [BuscadorController::class, 'search'])->name('buscar');
 Route::get('/api/sugerencias', [BuscadorController::class, 'suggestions'])->name('api.sugerencias');
 
-// Redirecciones amigables (opcional, para URLs antiguas)
+// Redirecciones
 Route::get('/productos', function () {
     return redirect()->route('categorias.index');
 });
 
 Route::get('/acerca-de', function () {
     return redirect()->route('home');
-    // O si tienes una página específica: return Inertia::render('About');
 });
 
-Route::get('/', function () {
-    return Inertia::render('Welcome', [
-        'canLogin' => Route::has('login'),
-        'canRegister' => Route::has('register'),
-        'laravelVersion' => Application::VERSION,
-        'phpVersion' => PHP_VERSION,
-    ]);
-});
-
+// Dashboard y Auth (Breeze)
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');

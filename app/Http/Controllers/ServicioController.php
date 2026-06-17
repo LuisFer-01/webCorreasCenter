@@ -27,7 +27,7 @@ class ServicioController extends Controller
                 ];
             });
 
-        return Inertia::render('Services/Index', [
+        return Inertia::render('servicios/Index', [
             'servicios' => $servicios,
         ]);
     }
@@ -54,7 +54,7 @@ class ServicioController extends Controller
                 'imagen' => $s->imagen_url,
             ]);
 
-        return Inertia::render('Services/Show', [
+        return Inertia::render('servicios/Show', [
             'servicio' => [
                 'id' => $servicio->id,
                 'nombre' => $servicio->nombre,

@@ -41,14 +41,19 @@ class Marca extends Model
         return $this->hasMany(Subcategoria::class);
     }
 
+    public function categorias()
+    {
+        return $this->hasMany(Categoria::class);
+    }
+
     public function scopeActivos($query)
     {
         return $query->where('estado', true);
     }
 
-    public function categorias()
+    public function scopeOrdenados($query)
     {
-        return $this->hasMany(Categoria::class);
+        return $query->orderBy('orden', 'asc')->orderBy('nombre', 'asc');
     }
 
     public function getLogoUrlAttribute(): string

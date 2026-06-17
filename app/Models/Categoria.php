@@ -44,6 +44,11 @@ class Categoria extends Model
         return $query->where('estado', true);
     }
 
+    public function scopeOrdenados($query)
+    {
+        return $query->orderBy('orden', 'asc')->orderBy('nombre', 'asc');
+    }
+
     public function marcas(): BelongsToMany
     {
         return $this->belongsToMany(Marca::class, table: null, foreignPivotKey: 'categoria_id', relatedPivotKey: 'marca_id')

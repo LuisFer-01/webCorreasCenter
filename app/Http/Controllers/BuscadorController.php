@@ -2,34 +2,38 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Subcategoria;
 use App\Models\Categoria;
-use App\Models\SubCategoria;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Inertia\Inertia;
 
 class BuscadorController extends Controller
 {
+    /**
+     * Página de resultados de búsqueda
+     */
     public function search(Request $request)
     {
         $query = $request->input('q', '');
 
         if (empty($query)) {
-            return Inertia::render('Search/Results', [
+            return Inertia::render('search/Results', [
                 'query' => '',
                 'resultados' => [],
                 'categorias' => [],
+                'totalResultados' => 0,
             ]);
         }
 
-        // Buscar en subcategorías (nombre, descripción)
+        // Buscar en subcategorías
         $subcategorias = Subcategoria::activos()
             ->where(function ($q) use ($query) {
                 $q->where('nombre', 'like', "%{$query}%")
                   ->orWhere('descripcion', 'like', "%{$query}%")
                   ->orWhere('descripcion_corta', 'like', "%{$query}%");
             })
-            ->with('categoria')
+            ->with(['categoria'])
             ->orderBy('nombre')
             ->get()
             ->map(function ($sub) {
@@ -39,16 +43,24 @@ class BuscadorController extends Controller
                     'slug' => $sub->slug,
                     'descripcion_corta' => $sub->descripcion_corta,
                     'imagen' => $sub->imagen_url,
+                    'tipo' => 'subcategoria',
                     'categoria' => [
                         'nombre' => $sub->categoria->nombre,
                         'slug' => $sub->categoria->slug,
                     ],
+                    'marcas_disponibles' => $sub->getMarcasDisponiblesCollection()
+                        ->map(fn($marca) => [
+                            'id' => $marca->id,
+                            'nombre' => $marca->nombre,
+                            'logo' => $marca->logo_url,
+                        ]),
                 ];
             });
 
         // Buscar en categorías
         $categorias = Categoria::activos()
             ->where('nombre', 'like', "%{$query}%")
+            ->orWhere('descripcion', 'like', "%{$query}%")
             ->orderBy('nombre')
             ->get()
             ->map(fn($cat) => [
@@ -57,17 +69,22 @@ class BuscadorController extends Controller
                 'slug' => $cat->slug,
                 'descripcion_corta' => Str::limit($cat->descripcion, 100),
                 'imagen' => $cat->imagen_url,
+                'tipo' => 'categoria',
+                'subcategorias_count' => $cat->subcategorias_count,
             ]);
 
-        return Inertia::render('Search/Results', [
+        $totalResultados = $subcategorias->count() + $categorias->count();
+
+        return Inertia::render('search/Result', [
             'query' => $query,
             'resultados' => $subcategorias,
             'categorias' => $categorias,
+            'totalResultados' => $totalResultados,
         ]);
     }
 
     /**
-     * Autocompletado para el buscador (API ligera)
+     * API para autocompletado (JSON)
      */
     public function suggestions(Request $request)
     {
@@ -77,7 +94,7 @@ class BuscadorController extends Controller
             return response()->json([]);
         }
 
-        $subcategorias = SubCategoria::activos()
+        $subcategorias = Subcategoria::activos()
             ->where('nombre', 'like', "%{$query}%")
             ->limit(5)
             ->get()
@@ -85,6 +102,7 @@ class BuscadorController extends Controller
                 'nombre' => $sub->nombre,
                 'slug' => $sub->slug,
                 'tipo' => 'subcategoria',
+                'categoria' => $sub->categoria->nombre ?? '',
             ]);
 
         $categorias = Categoria::activos()

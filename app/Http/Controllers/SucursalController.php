@@ -41,7 +41,7 @@ class SucursalController extends Controller
             ];
         };
 
-        return Inertia::render('Contact/Index', [
+        return Inertia::render('sucursales/Index', [
             'sucursalPrincipal' => $sucursalPrincipal ? $formatSucursal($sucursalPrincipal) : null,
             'otrasSucursales' => $otrasSucursales->map($formatSucursal),
         ]);
