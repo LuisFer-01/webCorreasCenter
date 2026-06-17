@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('detalles_subcategorias', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('subcategoria_id')->constrained('subcategorias')->restrictedOnDelete();
+            $table->foreignId('subcategoria_id')->constrained('subcategoria')->restrictedOnDelete();
             $table->json('caracteristicas'); // TODO: Se usara para mostrar las caracteristicas principales de la subcategoria en la vista de detalle
             $table->json('gama_productos'); // TODO: Se usará para mostrar la gama de productos de la subcategoria con sus imagenes en la vista de detalle, en correas ej: Seccion A, seccion B, etc.
             $table->json('medidas_productos'); // TODO: Se usará para mostrar las medidas de los productos de la subcategoria en la vista de detalle ordenado por la gama de productos, un ejemplo aplicado a la subcategoria de correas en V: ancho superior en inches, espesor o grosor en inches, el angulo en grados (40º).
