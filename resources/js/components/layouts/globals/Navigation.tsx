@@ -60,6 +60,14 @@ export default function Navigation({ todasCategorias = [] }: NavigationProps) {
         };
     }, [isOpen]);
 
+    const handleCategoryClick = (index: number) => {
+        setActiveCategory(activeCategory === index ? null : index);
+    };
+
+    const handleMobileCategoryClick = (index: number) => {
+        setMobileActiveCategory(mobileActiveCategory === index ? null : index);
+    };
+
     const handleSearch = (e: React.FormEvent) => {
         e.preventDefault();
         if (searchQuery.trim()) {
@@ -82,15 +90,11 @@ export default function Navigation({ todasCategorias = [] }: NavigationProps) {
         setIsOpen(false);
     };
 
-    const handleMobileCategoryClick = (index: number) => {
-        setMobileActiveCategory(mobileActiveCategory === index ? null : index);
-    };
-
     // Usar categorías de props o de global
     const categoriasDisplay = todasCategorias.length > 0 ? todasCategorias : globalCategories;
 
     return (
-        <nav className="fixed top-0 left-0 right-0 bg-[#b1001b] z-50 shadow-lg">
+        <nav className="fixed top-0 left-0 right-0 bg-[#EA0A2A] z-50 shadow-lg">
             <div className="max-w-7xl mx-auto px-3 sm:px-4 md:px-6 lg:px-8">
                 <div className="flex justify-between items-center h-16 sm:h-18 md:h-20">
                     {/* LOGO */}
@@ -98,15 +102,15 @@ export default function Navigation({ todasCategorias = [] }: NavigationProps) {
                         className="flex items-center cursor-pointer group flex-shrink-0"
                         onClick={handleLogoClick}
                     >
-                        <div className="relative h-10 w-auto sm:h-12 md:h-14 flex-shrink-0">
+                        <div className="relative h-12 sm:h-14 md:h-16 w-auto flex-shrink-0">
                             <img
                                 src="/storage/empresa/Logo_CC_Blanco.png"
                                 alt="Correas Center Logo"
                                 className="h-full w-auto object-contain group-hover:scale-110 transition-transform duration-500"
                             />
                         </div>
-                        <div className="text-white ml-2 sm:ml-3">
-                            <h1 className="text-sm sm:text-lg md:text-xl lg:text-2xl font-bold tracking-tight group-hover:text-gray-200 transition-colors leading-tight">
+                        <div className="text-white ml-2 sm:ml-3 hidden sm:block">
+                            <h1 className="text-base sm:text-lg md:text-xl lg:text-2xl font-bold tracking-tight group-hover:text-gray-200 transition-colors leading-tight">
                                 CORREAS CENTER
                             </h1>
                             <p className="text-[10px] sm:text-xs text-red-100 leading-tight">Solución Confiable</p>
@@ -127,11 +131,11 @@ export default function Navigation({ todasCategorias = [] }: NavigationProps) {
                                     }}
                                     onFocus={() => setShowSuggestions(true)}
                                     placeholder="Buscar productos..."
-                                    className="w-48 xl:w-64 px-3 xl:px-4 py-2 rounded-l-md border-0 bg-[#C0939A] focus:bg-[#D9B0B6] focus:outline-none focus:ring-2 focus:ring-white text-gray-900 placeholder:text-gray-700 transition-colors duration-200 text-sm xl:text-base"
+                                    className="w-48 xl:w-64 px-3 xl:px-4 py-2 rounded-l-md border-2 border-white focus:bg-white focus:outline-none focus:ring-2 focus:ring-white/50 text-gray-900 placeholder:text-gray-500 transition-colors duration-200 text-sm xl:text-base bg-white"
                                 />
                                 <button
                                     type="submit"
-                                    className="bg-white text-[#ea0a2c] px-3 xl:px-4 py-2 rounded-r-md hover:bg-gray-100 transition-colors"
+                                    className="bg-white text-[#EA0A2A] px-3 xl:px-4 py-2 rounded-r-md hover:bg-gray-100 transition-colors border-2 border-l-0 border-white"
                                 >
                                     <Search size={20} />
                                 </button>
@@ -207,7 +211,7 @@ export default function Navigation({ todasCategorias = [] }: NavigationProps) {
                                                         className="text-gray-700 hover:text-[#EA0A2A] text-sm block py-1.5 px-3 rounded hover:bg-white transition-all"
                                                         onClick={() => {
                                                             setShowProducts(false);
-                                                            setIsOpen(false);
+                                                            setActiveCategory(null);
                                                         }}
                                                     >
                                                         Ver {categoria.nombre} →
@@ -288,7 +292,7 @@ export default function Navigation({ todasCategorias = [] }: NavigationProps) {
                         onClick={() => setIsOpen(false)}
                     />
 
-                    <div className="fixed top-16 sm:top-18 right-0 bottom-0 w-[85%] max-w-sm bg-[#b1001b] shadow-2xl lg:hidden z-50 overflow-y-auto animate-slide-in">
+                    <div className="fixed top-16 sm:top-18 right-0 bottom-0 w-[85%] max-w-sm bg-[#EA0A2A] shadow-2xl lg:hidden z-50 overflow-y-auto animate-slide-in">
                         <div className="px-4 py-4 space-y-4">
                             {/* Buscador móvil */}
                             <form onSubmit={handleSearch} className="flex items-center">
@@ -297,7 +301,7 @@ export default function Navigation({ todasCategorias = [] }: NavigationProps) {
                                     value={searchQuery}
                                     onChange={(e) => setSearchQuery(e.target.value)}
                                     placeholder="Buscar productos..."
-                                    className="flex-1 px-4 py-3 rounded-l-md border-0 bg-[#C0939A] focus:bg-[#D9B0B6] focus:outline-none text-gray-900 placeholder:text-gray-700 text-sm"
+                                    className="flex-1 px-4 py-3 rounded-l-md border-0 bg-white/90 focus:bg-white focus:outline-none text-gray-900 placeholder:text-gray-600 text-sm"
                                 />
                                 <button
                                     type="submit"
@@ -430,9 +434,4 @@ export default function Navigation({ todasCategorias = [] }: NavigationProps) {
             `}</style>
         </nav>
     );
-}
-
-// Función helper para el acordeón
-function handleCategoryClick(index: number) {
-    // Implementar si es necesario
 }

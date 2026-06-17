@@ -1,3 +1,27 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* Colores personalizados de Correas Center */
+:root {
+    --color-primary: #EA0A2A;
+    --color-primary-dark: #C10923;
+    --color-secondary: #9A0820;
+}
+
+.bg-primary {
+    background-color: #EA0A2A !important;
+}
+
+.bg-primary-dark {
+    background-color: #C10923 !important;
+}
+
+.text-primary {
+    color: #EA0A2A !important;
+}
+
+/* Forzar color del navigation */
+nav[class*="fixed"] {
+    background-color: #EA0A2A !important;
+}
