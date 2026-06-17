@@ -1,18 +1,27 @@
-import ApplicationLogo from '@/Components/ApplicationLogo';
-import { Link } from '@inertiajs/react';
+import Footer from '@/components/layouts/globals/Footer';
+import Navigation from '@/components/layouts/globals/Navigation';
+import WhatsAppFloat from '@/components/layouts/globals/WhatsAppFloat';
+import { Head } from '@inertiajs/react';
 
-export default function GuestLayout({ children }) {
+export default function GuestLayout({ children, title, description }) {
     return (
-        <div className="flex min-h-screen flex-col items-center bg-gray-100 pt-6 sm:justify-center sm:pt-0">
-            <div>
-                <Link href="/">
-                    <ApplicationLogo className="h-20 w-20 fill-current text-gray-500" />
-                </Link>
-            </div>
+        <>
+            <Head>
+                <title>{title || 'Correas Center - Soluciones Industriales'}</title>
+                <meta name="description" content={description || 'Más de 25 años brindando repuestos, fabricación especializada y soporte técnico para la industria boliviana.'} />
+                <meta name="viewport" content="width=device-width, initial-scale=1" />
+            </Head>
 
-            <div className="mt-6 w-full overflow-hidden bg-white px-6 py-4 shadow-md sm:max-w-md sm:rounded-lg">
-                {children}
+            <div className="min-h-screen flex flex-col bg-white">
+                <Navigation />
+
+                <main className="flex-grow">
+                    {children}
+                </main>
+
+                <Footer />
+                <WhatsAppFloat />
             </div>
-        </div>
+        </>
     );
 }
